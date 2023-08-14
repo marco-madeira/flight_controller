@@ -1,16 +1,17 @@
-import { MapContainer, Marker, TileLayer} from "react-leaflet";
 import "./App.css";
 import "leaflet/dist/leaflet.css";
+import { QueryClient, QueryClientProvider} from "react-query";
+import { AppRoutes } from "./routes";
 
 function App() {
+ 
+
+  const queryClient = new QueryClient();
+
   return (
-    <MapContainer center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false}>
-      <TileLayer
-        attribution="Arango Map"
-        url="https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}{r}.jpg"
-      />
-      <Marker position={[50.504, -0.04]}></Marker>
-    </MapContainer>
+    <QueryClientProvider client={queryClient}>
+      <AppRoutes />    
+    </QueryClientProvider>
   );
 }
 

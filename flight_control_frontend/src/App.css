@@ -1,13 +1,15 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  /* max-width: 1280px; */
+  /* margin: 0; */
+  padding: 2em;
+  background-color: #1f2421;
 }
 
-.leaflet-container{
-  height: 100vh;
+body{
+  margin: 0;
+  padding: 0;
 }
+
 /* 
 .logo {
   height: 6em;

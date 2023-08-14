@@ -1,13 +1,17 @@
 class Flight:
-    def __init__(self, tail_number: str, distance: int, 
-                 flight_number: int, long: int, lat: int, 
-                 dep_time: int, arr_time: int
+    def __init__(self,id: str, flight_number: int, 
+                 tail_number: str, flight_long: float, flight_lat: float, 
+                 dep_long: float, dep_lat: float, 
+                 arr_long: float, arr_lat: float,            
         ):
-        self.tail_number = tail_number
-        self.distance = distance
+        self.id = id
         self.flight_number = flight_number
-        self.long = long
-        self.lat = lat
-        self.dep_time = dep_time
-        self.arr_time = arr_time
+        self.tail_number = tail_number
+        self.flight_long = flight_long
+        self.flight_lat = flight_lat
+        self.dep_long = dep_long
+        self.dep_lat = dep_lat
+        self.arr_long = arr_long
+        self.arr_lat = arr_lat
+       
         

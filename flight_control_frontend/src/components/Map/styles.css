@@ -1,0 +1,42 @@
+.dashboard_div{
+  display:flex;
+  flex-direction: column;
+  gap: 2em;
+}
+
+.leaflet-container{
+    height: 75vh;
+  }
+
+.controller_div{
+  display:flex;
+  flex-direction: row;
+  justify-content: space-around;
+  max-height: 15vh;
+  background-color: rgb(22, 21, 21);
+  padding: 2em;
+  gap: 2em;
+  overflow: hidden;
+} 
+
+.text_box {
+  font-size: 1em;
+  color: #E8DB7D;
+  /* overflow: hidden;
+  white-space: nowrap; */
+}
+
+button{
+   padding: 1em;
+   background-color: #49A078;
+   color: white;
+   border-radius: 1em;
+   font-size: small;
+   max-width: 10%;
+}
+
+button:hover{
+  cursor: pointer;
+  background-color: #33684f;
+}
+
