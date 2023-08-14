@@ -29,10 +29,10 @@ export function AirportMap() {
     lat: 39.16221715834476,
   } as Coordinates;
 
-  const airportId = "airports2/105113";
-  const flightId = "flights2/107901";
+  const airportId = "airports/105113";
+  const flightId = "flights/107901";
 
-  const airportId2 = "airports2/106032";
+  const airportId2 = "airports/106032";
 
   const { data: airport } = useGetAirportById(airportId);
   const { data: flightsInRange, refetch } =
@@ -92,7 +92,6 @@ export function AirportMap() {
                 <p>{`Nº do avião: ${value.tailNum}`}</p>
                 <p>{`Longitude: ${value.flightLong}`}</p>
                 <p>{`Latitude: ${value.flightLat}`}</p>
-                {/* <button>Solicitar Pouso</button> */}
               </div>
             ) : (
               <></>
@@ -163,7 +162,6 @@ export function AirportMap() {
           </MapContainer>
         )}
       </div>
-      <button>Atualizar Rotas</button>
     </div>
   );
 }

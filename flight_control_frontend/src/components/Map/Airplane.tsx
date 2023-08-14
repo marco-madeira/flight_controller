@@ -16,8 +16,8 @@ import { FlightModal } from "../Modal/FlightModal";
 import { AirportModal } from "../Modal/AirportModal";
 
 export function AirplaneMap() {
-  const flightId = "flights2/107901";
-  const flightId2 = "flights2/108115";
+  const flightId = "flights/107901";
+  const flightId2 = "flights/108115";
 
   const { data: flight, refetch: refetchFlight } = useGetFlightById(flightId);
   const { data: getNearAirports, refetch: refetchNearAirports } =

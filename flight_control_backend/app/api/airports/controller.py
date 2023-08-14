@@ -16,14 +16,14 @@ base_url = "/airports"
 
 @router.get(f"{base_url}/getAllAirports")
 def get_all_airport():
-    query = f'for airport in airports2 return airport'
+    query = f'for airport in airports return airport'
     results = query_wrapper(query)
-    data = dic_to_airport(results)
-    return data
+    # data = dic_to_airport(results)
+    return results
      
 @router.get(f"{base_url}/getAirportById")
 def get_airport_by_id(airport_id:str):
-    query = f'for airport in airports2 filter airport._id == "{airport_id}" return airport'
+    query = f'for airport in airports filter airport._id == "{airport_id}" return airport'
     results = query_wrapper(query)
     data = dic_to_airport(results)[0]
     return data
@@ -31,8 +31,8 @@ def get_airport_by_id(airport_id:str):
 @router.get(f"{base_url}/getFlightsInAirportRange")
 def get_flights_in_airport_range(airport_id: str):
     query = (
-        f'let airport = (for airport in airports2 filter airport._id == "{airport_id}" return airport)[0]'
-        f'for flight in flights2 filter GEO_DISTANCE([airport.long, airport.lat],[flight.long, flight.lat]) <= 50000 '
+        f'let airport = (for airport in airports filter airport._id == "{airport_id}" return airport)[0]'
+        f'for flight in flights filter GEO_DISTANCE([airport.long, airport.lat],[flight.long, flight.lat]) <= 50000 '
         'return {'
         '  id: flight._id,'
         '  tailNum: flight.tailNum,'

@@ -14,13 +14,15 @@ def query_wrapper(query: str):
     results_list  = list(result)
     # for index, data in enumerate(results):
     #     result_dic[index] = data 
-    # print(result_dic)                  
+    # print(result_dic)
+    print(results_list)                  
     return results_list
 
 def dic_to_airport(results_list: list) -> list[Airport]:
     airports = []
     for data in results_list:  
         airport = Airport(
+            id=data["_id"],
             name=data["name"],
             city=data["city"],
             state=data["state"],

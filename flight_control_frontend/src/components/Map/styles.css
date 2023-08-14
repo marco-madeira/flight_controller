@@ -32,7 +32,7 @@ button{
    color: white;
    border-radius: 1em;
    font-size: small;
-   max-width: 10%;
+   max-width: 100%;
 }
 
 button:hover{

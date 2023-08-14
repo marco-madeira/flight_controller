@@ -8,6 +8,15 @@ export type updateLocation = {
     lat: number
 }
 
+export type CreateFlightDTO ={
+    depAirportId: string;
+    arrAirportId: string;
+    tailNum: string;
+    flightNum: string;
+    long: number;
+    lat: number;
+}
+
 const baseUrl = "/flights"
 
 const getFlightById = async(flightId: string): Promise<Flight> =>{
@@ -28,8 +37,15 @@ export async function updateFlightLocation(up: updateLocation): Promise<Flight>{
     return res.data
 }
 
+export async function createFlight(createDTO: CreateFlightDTO): Promise<Flight>{
+    const url = `${baseUrl}/createFlight?dep_airport_id=${createDTO.depAirportId}&arr_airport_id=${createDTO.arrAirportId}&tail_num=${createDTO.tailNum}&flight_num=${createDTO.flightNum}&long=${createDTO.long}&lat=${createDTO.lat}`
+    const res = await api.post(url)
+    return res.data 
+}
+
 export const FlightService = {
     getFlightById, 
     updateFlightLocation,
-    getNearAirports
+    getNearAirports,
+    createFlight
 }

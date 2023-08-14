@@ -1,7 +1,8 @@
 class Airport:
-    def __init__(self, name: str, city: str, 
+    def __init__(self, id: str, name: str, city: str, 
                  state: str, lat: float, long: float, 
         ):
+        self.id = id
         self.name = name
         self.city = city
         self.state = state

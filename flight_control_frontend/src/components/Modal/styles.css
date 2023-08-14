@@ -8,4 +8,10 @@
     color: #E8DB7D;
     padding: 2em;
     white-space: nowrap;
+    gap: 1em
+}
+
+.input{
+    padding: 0.5em;
+    border-radius: 0.5em;
 }
