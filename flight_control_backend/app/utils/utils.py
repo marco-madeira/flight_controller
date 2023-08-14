@@ -6,7 +6,7 @@ from api.flights.model import Flight
 
 load_dotenv()
 client  = ArangoClient(os.getenv("DATABASE_URL"))
-db = client.db("Flight", username="root", password="openSesame")
+db = client.db("Flights", username=os.getenv("DATABASE_USER"), password=os.getenv("DATABASE_PASSWORD"))
 
 
 def query_wrapper(query: str):

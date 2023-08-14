@@ -10,7 +10,7 @@ from utils.utils import query_wrapper, dic_to_flight, dic_to_airport
 load_dotenv()
 router = APIRouter()
 client  = ArangoClient(os.getenv("DATABASE_URL"))
-db = client.db("Flight", username="root", password="openSesame")
+db = client.db("Flights", username=os.getenv("DATABASE_USER"), password=os.getenv("DATABASE_PASSWORD"))
 base_url = "/flights"
 
 class Flight_Model(BaseModel):
