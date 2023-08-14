@@ -10,10 +10,12 @@ export default function Home() {
 
   return (
     <>
-      {!state ? <Map/>: <AirplaneMap />}
-      <button onClick={() => navigate("/")}>Menu</button>
-      <button onClick={() => navigate("/flightMap")}>Voôs</button>
-      <button onClick={() => navigate("/airportMap")}>Aeroportos</button>
+      {!state ? <Map /> : <AirplaneMap />}
+      <div className="menu">
+        <button onClick={() => navigate("/")}>Menu</button>
+        <button onClick={() => navigate("/flightMap")}>Vôos</button>
+        <button onClick={() => navigate("/airportMap")}>Aeroportos</button>
+      </div>
     </>
   );
 }

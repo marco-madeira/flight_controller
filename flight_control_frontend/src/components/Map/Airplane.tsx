@@ -7,6 +7,7 @@ import { getGeoPoints } from "../../utils/GetGeoPoints";
 import { useEffect, useState } from "react";
 import { useUpdateFlightLocation } from "../../core/network/queries/flight/mutations";
 import { Flight } from "../../core/models/Flight";
+import { useNavigate } from "react-router-dom";
 import {
   useGetFlightById,
   useGetNearAirports,
@@ -19,16 +20,19 @@ export function AirplaneMap() {
   const flightId = "flights/107901";
   const flightId2 = "flights/108115";
 
+  const navigate = useNavigate();
+
+
   const { data: flight, refetch: refetchFlight } = useGetFlightById(flightId);
   const { data: getNearAirports, refetch: refetchNearAirports } =
     useGetNearAirports(flightId, 80000);
   const { mutate: updateFlightLocation } = useUpdateFlightLocation();
   const coordinates = flight
     ? getGeoPoints(
-        { long: flight.depLong, lat: flight.depLat },
-        { long: flight.arrLong, lat: flight.arrLat },
-        499
-      )
+      { long: flight.depLong, lat: flight.depLat },
+      { long: flight.arrLong, lat: flight.arrLat },
+      499
+    )
     : [{ long: 0, lat: 0 }];
 
   const [count, setCount] = useState(0);
@@ -39,10 +43,10 @@ export function AirplaneMap() {
     useGetNearAirports(flightId2, 80000);
   const coordinates2 = flight2
     ? getGeoPoints(
-        { long: flight2.depLong, lat: flight2.depLat },
-        { long: flight2.arrLong, lat: flight2.arrLat },
-        499
-      )
+      { long: flight2.depLong, lat: flight2.depLat },
+      { long: flight2.arrLong, lat: flight2.arrLat },
+      499
+    )
     : [{ long: 0, lat: 0 }];
 
   const handleUpdateRoute = useCallback(() => {
@@ -171,7 +175,7 @@ export function AirplaneMap() {
               )}
             </MapContainer>
           </div>
-          {/* <button onClick={handleUpdateRoute}>Iniciar viagem</button> */}
+          <button onClick={() => navigate("/")}>Menu</button>
         </div>
       )}
     </>

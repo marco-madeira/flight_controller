@@ -22,12 +22,15 @@ import { Flight } from "../../core/models/Flight";
 import { airplaneIcon, airportIcon } from "../../utils/Icons";
 import { useGetFlightById } from "../../core/network/queries/flight/queries";
 import { AirportModal } from "../Modal/AirportModal";
+import { useNavigate } from "react-router-dom";
 
 export function AirportMap() {
   const mapPosition = {
     long: -98.42357876374714,
     lat: 39.16221715834476,
   } as Coordinates;
+
+  const navigate = useNavigate();
 
   const airportId = "airports/105113";
   const flightId = "flights/107901";
@@ -47,10 +50,10 @@ export function AirportMap() {
   const [count, setCount] = useState(0);
   const coordinates = flight
     ? getGeoPoints(
-        { long: flight.depLong, lat: flight.depLat },
-        { long: flight.arrLong, lat: flight.arrLat },
-        499
-      )
+      { long: flight.depLong, lat: flight.depLat },
+      { long: flight.arrLong, lat: flight.arrLat },
+      499
+    )
     : [{ long: 0, lat: 0 }];
 
   const handleUpdateRoute = useCallback(() => {
@@ -162,6 +165,8 @@ export function AirportMap() {
           </MapContainer>
         )}
       </div>
+      <button onClick={() => navigate("/")}>Menu</button>
+
     </div>
   );
 }

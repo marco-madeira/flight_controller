@@ -18,7 +18,7 @@ export function Map() {
   return (
     <div className="dashboard_div">
       <div className="controller_div">
-        Teste
+        Flight Control
       </div>
       <div>
         <MapContainer
