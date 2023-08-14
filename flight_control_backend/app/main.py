@@ -16,8 +16,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(airport_router)
-app.include_router(flight_router)                                   
+app.include_router(airport_router, tags=["airports"])
+app.include_router(flight_router, tags=["flights"])                                   
 
 if __name__ == "__main__":
     uvicorn.run(app, host="localhost", port=4000)

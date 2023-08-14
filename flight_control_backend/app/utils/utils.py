@@ -45,6 +45,6 @@ def dic_to_flight(results_list: list) -> list[Flight]:
             arr_lat=data["arrLat"],  
         )
         flights.append(flight)
-    return flights         
+    return flights     
 
 

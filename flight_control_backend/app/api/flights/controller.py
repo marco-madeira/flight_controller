@@ -32,13 +32,13 @@ class Flight_Model(BaseModel):
 @router.get(f'{base_url}/getFlightById')
 def get_flight_by_id(flight_id: str):
     query = (
-        f'FOR flight IN flights FILTER flight._id == "{flight_id}" '
+        f'FOR flight IN flights2 FILTER flight._id == "{flight_id}" '
         'return {'
         '  id: flight._id,'
-        '  tailNum: flight.TailNum,'
-        '  flightNum: flight.FlightNum,'
-        '  flightLong: flight.Long,'
-        '  flightLat: flight.Lat,'
+        '  tailNum: flight.tailNum,'
+        '  flightNum: flight.flightNum,'
+        '  flightLong: flight.long,'
+        '  flightLat: flight.lat,'
         '  depLong: DOCUMENT(flight._from).long,'
         '  depLat: DOCUMENT(flight._from).lat,'
         '  arrLong: DOCUMENT(flight._to).long,'
@@ -46,8 +46,8 @@ def get_flight_by_id(flight_id: str):
         '}'
     )
     results = query_wrapper(query)
-    data = dic_to_flight(results)[0]
-    return data
+    # data = dic_to_flight(results)
+    return results[0]
 
 @router.get(f'{base_url}/getFlightRoute')
 def get_flight_route(flight_id: str):
@@ -56,15 +56,15 @@ def get_flight_route(flight_id: str):
 @router.put(f'{base_url}/updateFlightLocation')
 def update_flight_location(flight_id: str, long: float, lat: float ):
     results = db.aql.execute(
-        f'for flight in flights filter flight._id == "{flight_id}"'\
-        f'update {{"_key": flight._key, "Long": {long}, "Lat": {lat}}} in flights'
+        f'for flight in flights2 filter flight._id == "{flight_id}"'\
+        f'update {{"_key": flight._key, "long": {long}, "lat": {lat}}} in flights2'
     )
     return results
 
 @router.get(f"{base_url}/getNearAirports")
 def get_near_airports(flight_id: str, distance: int):
-    query = f'let flight = (for flight in flights filter flight._id == "{flight_id}" return flight)[0]'\
-         f'for airport in airports filter GEO_DISTANCE([flight.Long, flight.Lat], [airport.long, airport.lat]) <= {distance}'\
+    query = f'let flight = (for flight in flights2 filter flight._id == "{flight_id}" return flight)[0]'\
+         f'for airport in airports2 filter GEO_DISTANCE([flight.long, flight.lat], [airport.long, airport.lat]) <= {distance}'\
          f'return airport'
     results = query_wrapper(query)
     data = dic_to_airport(results)

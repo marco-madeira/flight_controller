@@ -11,7 +11,7 @@ const getAllAirports = async (): Promise<Airport[]> => {
 };
 
 const getAirportById = async (airportId: string): Promise<Airport> => {
-  const url = `${baseUrl}/get_airport_by_id?airport_id=${airportId}`;
+  const url = `${baseUrl}/getAirportById?airport_id=${airportId}`;
   const res = await api.get<Airport>(url);
   return res.data;
 };

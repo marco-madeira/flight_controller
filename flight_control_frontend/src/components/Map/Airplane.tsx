@@ -1,47 +1,90 @@
-import { Circle, MapContainer, Marker, TileLayer } from "react-leaflet";
+import { Circle, MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "./styles.css";
 import { Coordinates } from "../../utils/GetGeoPoints";
-import React from "react";
+import React, { useCallback } from "react";
 import { getGeoPoints } from "../../utils/GetGeoPoints";
 import { useEffect, useState } from "react";
 import { useUpdateFlightLocation } from "../../core/network/queries/flight/mutations";
 import { Flight } from "../../core/models/Flight";
-import { useGetFlightById, useGetNearAirports } from "../../core/network/queries/flight/queries";
+import {
+  useGetFlightById,
+  useGetNearAirports,
+} from "../../core/network/queries/flight/queries";
 import { airplaneIcon, airportIcon } from "../../utils/Icons";
+import { FlightModal } from "../Modal/FlightModal";
+import { AirportModal } from "../Modal/AirportModal";
 
 export function AirplaneMap() {
-  const flightId = "flights/100031";
+  const flightId = "flights2/107901";
+  const flightId2 = "flights2/108115";
 
   const { data: flight, refetch: refetchFlight } = useGetFlightById(flightId);
   const { data: getNearAirports, refetch: refetchNearAirports } =
-    useGetNearAirports(flightId, 50000);
+    useGetNearAirports(flightId, 80000);
   const { mutate: updateFlightLocation } = useUpdateFlightLocation();
-  const coordinates = flight ? getGeoPoints({long: flight.flight_long, lat: flight.flight_lat} ,
-    {long: flight.arr_long, lat: flight.arr_lat}, 10) : [{long: 0, lat: 0}]
+  const coordinates = flight
+    ? getGeoPoints(
+        { long: flight.depLong, lat: flight.depLat },
+        { long: flight.arrLong, lat: flight.arrLat },
+        499
+      )
+    : [{ long: 0, lat: 0 }];
+
   const [count, setCount] = useState(0);
 
-  const handleUpdateRoute = () => {
-    if (flight) {
+  const { data: flight2, refetch: refetchFlight2 } =
+    useGetFlightById(flightId2);
+  const { data: getNearAirports2, refetch: refetchNearAirports2 } =
+    useGetNearAirports(flightId2, 80000);
+  const coordinates2 = flight2
+    ? getGeoPoints(
+        { long: flight2.depLong, lat: flight2.depLat },
+        { long: flight2.arrLong, lat: flight2.arrLat },
+        499
+      )
+    : [{ long: 0, lat: 0 }];
+
+  const handleUpdateRoute = useCallback(() => {
+    if (flight && flight2) {
       updateFlightLocation({
         flightId: flight.id,
         long: coordinates[count].long,
         lat: coordinates[count].lat,
       });
+      updateFlightLocation({
+        flightId: flight2.id,
+        long: coordinates2[count].long,
+        lat: coordinates2[count].lat,
+      });
       refetchFlight();
       refetchNearAirports();
+      refetchFlight2();
+      refetchNearAirports2();
       setCount(count + 1);
     }
-  };
+  }, [
+    count,
+    flight,
+    coordinates,
+    updateFlightLocation,
+    refetchFlight,
+    refetchNearAirports,
+    flight2,
+    coordinates2,
+    refetchFlight2,
+    refetchNearAirports2,
+  ]);
 
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //   }, 3000);
-  //   return () => {
-  //     handleUpdateRoute();
-  //     clearTimeout(timer);
-  //   };
-  // }, []);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      handleUpdateRoute();
+    }, 75);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [handleUpdateRoute]);
 
   return (
     <>
@@ -63,7 +106,7 @@ export function AirplaneMap() {
           </div>
           <div>
             <MapContainer
-              center={[flight.flight_lat, flight.flight_long]}
+              center={[flight.flightLat, flight.flightLong]}
               zoom={6}
               scrollWheelZoom={false}
             >
@@ -72,12 +115,16 @@ export function AirplaneMap() {
                 url="https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}{r}.jpg"
               />
               <Marker
-                position={[flight.flight_lat, flight.flight_long]}
+                position={[flight.flightLat, flight.flightLong]}
                 icon={airplaneIcon}
-              />
+              >
+                <Popup>
+                  <FlightModal flight={flight} />
+                </Popup>
+              </Marker>
               <Circle
-                center={[flight.flight_lat, flight.flight_long]}
-                radius={50000}
+                center={[flight.flightLat, flight.flightLong]}
+                radius={80000}
               ></Circle>
               {getNearAirports &&
                 getNearAirports.map((value, index) => (
@@ -85,12 +132,46 @@ export function AirplaneMap() {
                     <Marker
                       position={[value.lat, value.long]}
                       icon={airportIcon}
-                    />
+                    >
+                      <Popup>
+                        <AirportModal airport={value} />
+                      </Popup>
+                    </Marker>
                   </React.Fragment>
                 ))}
+              {flight2 && (
+                <>
+                  <Marker
+                    position={[flight2.flightLat, flight2.flightLong]}
+                    icon={airplaneIcon}
+                  >
+                    <Popup>
+                      <FlightModal flight={flight2} />
+                    </Popup>
+                  </Marker>
+                  <Circle
+                    center={[flight2.flightLat, flight2.flightLong]}
+                    radius={80000}
+                    color="#ffffff"
+                  ></Circle>
+                  {getNearAirports2 &&
+                    getNearAirports2.map((value, index) => (
+                      <React.Fragment key={index}>
+                        <Marker
+                          position={[value.lat, value.long]}
+                          icon={airportIcon}
+                        >
+                          <Popup>
+                            <AirportModal airport={value} />
+                          </Popup>
+                        </Marker>{" "}
+                      </React.Fragment>
+                    ))}
+                </>
+              )}
             </MapContainer>
           </div>
-          <button onClick={handleUpdateRoute}>Iniciar viagem</button>
+          {/* <button onClick={handleUpdateRoute}>Iniciar viagem</button> */}
         </div>
       )}
     </>
